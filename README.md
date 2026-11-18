@@ -1,4 +1,4 @@
-# OS Configuration Guide
+# OS Installation And Configuration Guide
 
 ## Bootstrap Repository
 1. Clone:
