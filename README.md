@@ -1,2 +1,85 @@
-# OS-Config-Instructions
-Configuration instructions, reminders, good-to-know's, etc, for when installing ones operating system
+# OS Configuration Guide
+
+## Bootstrap Repository
+1. Clone:
+   ```bash
+   git clone --bare https://github.com/Kevy42/dotfiles.git "$HOME/.dotfiles"
+   ```
+
+2. Checkout latest
+   ```bash
+   git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" reset --hard main
+   ```
+
+3. Reload shell config
+   ```bash
+   source "$HOME/.bashrc"
+   ```
+
+4. Hide untracked files from status output:
+   ```bash
+   dotfiles config --local status.showUntrackedFiles no
+   ```
+
+## Install Dependencies
+### Hard
+1. `keyd`
+2. `Nerd Font` (check `kitty.conf`)
+3. `Git`
+4. `Kitty`
+5. `fzf`
+6. Commmand-line copying utility (e.g `wl-copy`, provided by `wl-clipboard`)
+7. `Tmux`
+8. `tree-sitter-cli`
+9. `curl`
+10. `ripgrep`
+11. `Neovim`
+12. `shellcheck`
+13. `shfmt`
+
+### Soft
+#### Neovim Mason
+1. `wget`
+2. `pip`
+3. `npm`
+
+## Setup Miscellaneous
+
+1. Symlink `~/.dotfiles-misc/symlinks/keyd/default.conf` to `/etc/keyd/default.conf` as we cannot directly track the latter with git given it's outside of the repository root directory (i.e. `~`)
+    ```
+    sudo ln --interactive --symbolic --verbose "$HOME/.dotfiles-misc/symlinks/keyd/default.conf" '/etc/keyd/default.conf'
+    ```
+
+2. Symlink `/usr/share/keyd/keyd.compose` to `~/.XCompose` in order for `keyd` to be able to emit non-ASCII characters (see keyd.rvaiya(1))
+    ```
+    ln --interactive --symbolic --verbose '/usr/share/keyd/keyd.compose' "$HOME/.XCompose"
+    ```
+
+3. (Optional) create `~/.gitconfig-private` and add the following:
+    ```
+    [user]
+            email = [EMAIL]
+            name = [FULL NAME]
+    ```
+
+4. (Optional) create and configure `~/.ssh/personal_config` and `~/.ssh/work_config` (see `~/.ssh/config`)
+5. Bootstrap `tmux` TPM and install plugins
+6. (Optional) set `debconf(7)` priority to medium
+    ```
+    sudo dpkg-reconfigure debconf
+    ```
+
+### Neovim
+- Check `:checkhealth` and resolve any remaining issues
+
+#### Installing formatters, parsers, language servers, linters and debuggers
+⚠️ Packages should ONLY be installed via `Mason` if not available via the package manager!
+1. Formatters: install the ones used/listed in `conform.lua`
+2. Parsers: Verify that all Treesitter parsers have been installed (`:checkhealth`)
+3. Language servers: install the ones used/listed in `nvim-lspconfig.lua`
+4. Linters: install the ones listed here (currently not specified in any config files, only here): `shellcheck`
+
+#### AI
+- Obtain Github Copilot API key by running `:Copilot auth`
+
+#### Done :) — now reboot
