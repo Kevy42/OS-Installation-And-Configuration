@@ -1,6 +1,6 @@
 # OS Installation And Configuration Guide
 
-## Post-installation configuration
+## Post-installation Configuration
 
 1. Set `debconf(7)` priority to medium
     ```
